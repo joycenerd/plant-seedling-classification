@@ -14,8 +14,9 @@ class PlantSeedlingData(Dataset):
         if(self.root_dir.name=='train'):
             i=0
             for folder in os.listdir(root_dir):
-                for _file in os.listdir(root_dir.joinpath(folder)):
-                   self.x.append(_file)
+                folder_path=root_dir.joinpath(folder)
+                for _file in os.listdir(folder_path):
+                   self.x.append(folder_path.joinpath(_file))
                    self.y.append(i)
                 self.num_classes+=1
                 i+=1
