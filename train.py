@@ -51,7 +51,7 @@ def train():
 
             # forward
             outputs=model(_input)
-            _,predict_y=torch.max(outputs,1)
+            _,predict_y=torch.max(outputs.data,1)
             loss=loss_function(outputs,label)
 
             # backward
@@ -59,7 +59,7 @@ def train():
             optimizer.step()
 
             # statistics
-            current_loss+=loss.item()*_input.size(0)
+            current_loss+=loss.data[0]*_input.size(0)
             current_acc+=torch.sum(predict_y==label.data)
 
         total_loss=current_loss/len(train_data)
