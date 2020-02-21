@@ -3,7 +3,7 @@ from data_preprocessing import PlantSeedlingData
 from pathlib import Path
 from torch.utils.data import DataLoader
 import matplotlib.pyplot as plt
-from model import VGG16
+from model import VGG16,VGG19
 import copy
 import torch.nn as nn
 import torch
@@ -22,14 +22,21 @@ def train():
     data_loader = DataLoader(dataset=train_set, batch_size=32, shuffle=True, num_workers=1)
 
     # device=torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-    model = VGG16(num_classes=train_set.num_classes)
+    print("Input model: ")
+    which_model=input()
+    if which_model=="vgg16":
+        model = VGG16(num_classes=train_set.num_classes)
+        num_epochs=50
+    elif which_model=="vgg19":
+        model=VGG19(num_classes=train_set.num_classes)
+        num_epochs=25
+
     if torch.cuda.is_available():
         model=model.cuda("cuda:0")
     model.train()
 
     best_model_params = copy.deepcopy(model.state_dict())
     best_acc = 0.0
-    num_epochs = 50
     criterion = nn.CrossEntropyLoss()
     optimizer = torch.optim.SGD(params=model.parameters(), lr=0.001, momentum=0.9)
 
