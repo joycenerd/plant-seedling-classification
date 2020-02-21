@@ -65,6 +65,12 @@ def train():
         training_acc = float(training_corrects) / len(train_set)
 
         print(f'Training loss: {training_loss:.4f}\taccuracy: {training_acc:.4f}\n')
+        if training_acc>best_acc:
+            best_acc=training_acc
+            best_model_params=copy.deepcopy(model.state_dict())
+
+    model.load_state_dict(best_model_params)
+    torch.save(model, f'model-{best_acc:.02f}-best_train_acc.pth')
 
 
 
