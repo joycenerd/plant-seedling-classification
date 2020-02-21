@@ -18,12 +18,13 @@ def train():
         transforms.ToTensor(),
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
     ])
-    train_set = PlantSeedlingDataset(ROOTDIR.joinpath('train'), data_transform)
+    train_set = PlantSeedlingData(Path(ROOTDIR).joinpath('train'), data_transform)
     data_loader = DataLoader(dataset=train_set, batch_size=32, shuffle=True, num_workers=1)
 
-    device=torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    # device=torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     model = VGG16(num_classes=train_set.num_classes)
-    model = model.cuda(device)
+    if torch.cuda.is_available():
+        model=model.cuda("cuda:0")
     model.train()
 
     best_model_params = copy.deepcopy(model.state_dict())
@@ -41,8 +42,12 @@ def train():
         training_corrects = 0
 
         for i, (inputs, labels) in enumerate(data_loader):
-            inputs = Variable(inputs.cuda(CUDA_DEVICES))
-            labels = Variable(labels.cuda(CUDA_DEVICES))
+            if torch.cuda.is_available():
+                inputs = Variable(inputs.cuda("cuda:0"))
+                labels = Variable(labels.cuda("cuda:0"))
+            else:
+                inputs=Variable(inputs)
+                labels=Variable(labels)
 
             optimizer.zero_grad()
 
@@ -59,7 +64,7 @@ def train():
         training_loss = training_loss / len(train_set)
         training_acc = training_corrects / len(train_set)
 
-        print(f'Training loss: {training_loss:.4f}\taccuracy: {training_acc:.4f}\n'）
+        print(f'Training loss: {training_loss:.4f}\taccuracy: {training_acc:.4f}\n')
 
 
 
