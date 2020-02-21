@@ -54,10 +54,12 @@ def train():
             outputs = model(inputs)
             _, preds = torch.max(outputs.data, 1)
             loss = criterion(outputs, labels)
+            
 
             loss.backward()
             optimizer.step()
 
+            loss=float(loss)
             training_loss += loss.data[0] * inputs.size(0)
             training_corrects += torch.sum(preds == labels.data)
 
