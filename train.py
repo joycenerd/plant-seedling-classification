@@ -34,18 +34,43 @@ def train():
     optimizer=torch.optim.SGD(params=model.parameters(),lr=0.001,momentum=0.9)
     batch_size=32
 
-    for epoch in range(epochs):
-        show_progress="Epoch: "+str(epoch+1)+"/"+str(epochs)
+    for epoch in range(2):
+        show_progress="Epoch: "+str(epoch+1)+"/"+str(2)
         print(show_progress)
         print('-'*len(show_progress))
 
-        loss=0.0
-        correct=0
+        current_loss=0.0
+        current_acc=0
 
         for i,(_input,label) in enumerate(data_loader):
             _input=Variable(_input.cuda(device) if device=="cuda:0" else _input)
             label=Variable(label.cuda(device) if device=="cuda:0" else label)
             
+            # zero the parameter gradient
+            optimizer.zero_grad()
+
+            # forward
+            outputs=model(_input)
+            _,predict_y=torch.max(outputs,1)
+            loss=loss_function(outputs,label)
+
+            # backward
+            loss.backward()
+            optimizer.step()
+
+            # statistics
+            current_loss+=loss.item()*_input.size(0)
+            current_acc+=torch.sum(predict_y==label.data)
+
+        total_loss=current_loss/len(train_data)
+        total_acc=current_acc/len(train_data)
+        print("Loss: "+str(total_loss))
+        print("Accuracy: "+str(total_acc))
+
+
+
+
+
         
 
 
