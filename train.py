@@ -62,7 +62,7 @@ def train():
             training_corrects += torch.sum(preds == labels.data)
 
         training_loss = training_loss / len(train_set)
-        training_acc = training_corrects / len(train_set)
+        training_acc = float(training_corrects) / len(train_set)
 
         print(f'Training loss: {training_loss:.4f}\taccuracy: {training_acc:.4f}\n')
 
