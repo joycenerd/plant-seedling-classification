@@ -59,11 +59,13 @@ def train():
             optimizer.step()
 
             # statistics
-            current_loss+=loss.data[0]*_input.size(0)
+            current_loss+=loss.item()*_input.size(0)
             current_acc+=torch.sum(predict_y==label.data)
 
         total_loss=current_loss/len(train_data)
         total_acc=current_acc/len(train_data)
+        print("length of training data: "+str(len(train_data)))
+        print("current loss: "+str(current_loss))
         print("Loss: "+str(total_loss))
         print("Accuracy: "+str(total_acc))
 
