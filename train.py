@@ -33,7 +33,6 @@ def train():
     criterion = nn.CrossEntropyLoss()
     optimizer = torch.optim.SGD(params=model.parameters(), lr=0.001, momentum=0.9)
 
-    num_epochs=2
     for epoch in range(num_epochs):
         print(f'Epoch: {epoch + 1}/{num_epochs}')
         print('-' * len(f'Epoch: {epoch + 1}/{num_epochs}'))
