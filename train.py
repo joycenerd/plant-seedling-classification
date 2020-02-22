@@ -83,6 +83,8 @@ def train():
 
     model.load_state_dict(best_model_params)
     torch.save(model, f'model-{best_acc:.02f}-best_train_acc.pth')
+
+    loss_acc=np.round(loss_acc,4)
     np.savetxt('loss_acc.csv',loss_acc,delimiter=',')
 
 
