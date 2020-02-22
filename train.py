@@ -41,7 +41,7 @@ def train():
     best_acc = 0.0
     criterion = nn.CrossEntropyLoss()
     optimizer = torch.optim.SGD(params=model.parameters(), lr=0.001, momentum=0.9)
-    loss_acc=np.empty((0,2),dtype=float)
+    train_loss_acc=np.empty((0,2),dtype=float)
 
 
     for epoch in range(num_epochs):
@@ -74,7 +74,7 @@ def train():
 
         training_loss = training_loss / len(train_set)
         training_acc = float(training_corrects) / len(train_set)
-        loss_acc=np.append(loss_acc,np.array([[training_loss,training_acc]]),axis=0)
+        train_loss_acc=np.append(train_loss_acc,np.array([[training_loss,training_acc]]),axis=0)
 
         print(f'Training loss: {training_loss:.4f}\taccuracy: {training_acc:.4f}\n')
         if training_acc>best_acc:
@@ -84,8 +84,8 @@ def train():
     model.load_state_dict(best_model_params)
     torch.save(model, f'model-{best_acc:.02f}-best_train_acc.pth')
 
-    loss_acc=np.round(loss_acc,4)
-    np.savetxt('loss_acc.csv',loss_acc,delimiter=',')
+    train_loss_acc=np.round(train_loss_acc,4)
+    np.savetxt('train_loss_acc.csv',train_loss_acc,delimiter=',')
 
 
 
