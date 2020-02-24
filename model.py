@@ -145,6 +145,26 @@ class VGG19(nn.Module):
         x=self.classifier(x)
         return x
 
+class GOOGLENET(nn.Module):
+    def __init__(self,num_classes=1000)
+    super(self,GOOGLENET).__init__()
+
+    self.BasicConv2d=nn.Sequential([
+        nn.Conv2d(in_channels=3,out_channels=64,kernel_size=7,stride=2,padding=3),
+        nn.BatchNorm2d(out_channels=64,eps=0.001),
+        nn.ReLU(),
+        nn.MaxPool2d(kernel_size=3,stride=2,padding=1),
+
+        nn.Conv2d(in_channels=64,out_channels=192,kernel_size=3,stride=1),
+        nn.BatchNorm2d(out_channels=192,eps=0.001),
+        nn.ReLU(),
+        nn.MaxPool2d(kernel_size=3,stride=2)
+    ])
+
+    
+
+
+
 
 
 
