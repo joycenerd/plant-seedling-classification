@@ -101,7 +101,7 @@ def train():
             loss=criterion(outputs,target)
 
             valid_loss+=loss.item()*inputs.size(0)
-            valid_corrects+=torch.sum(preds==_data.data)
+            valid_corrects+=torch.sum(preds==target.data)
         
         valid_loss=valid_loss/split
         valid_acc=float(valid_corrects)/split
