@@ -3,7 +3,7 @@ from test import test
 
 def main():
     train()
-    test()
+    # test()
 
 
 if __name__=="__main__":

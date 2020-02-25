@@ -3,7 +3,7 @@ from data_preprocessing import PlantSeedlingData
 from pathlib import Path
 from torch.utils.data import DataLoader
 import matplotlib.pyplot as plt
-from model import VGG16,VGG19
+from model import VGG16,VGG19,GOOGLENET
 import copy
 import torch.nn as nn
 import torch
@@ -31,6 +31,9 @@ def train():
         num_epochs=50
     elif which_model=="vgg19":
         model=VGG19(num_classes=train_set.num_classes)
+        num_epochs=100
+    elif which_model=="googlenet":
+        model=GOOGLENET(num_classes=train_set.num_classes)
         num_epochs=100
 
     if torch.cuda.is_available():
@@ -75,6 +78,8 @@ def train():
         training_loss = training_loss / len(train_set)
         training_acc = float(training_corrects) / len(train_set)
         train_loss_acc=np.append(train_loss_acc,np.array([[training_loss,training_acc]]),axis=0)
+        if epoch>50 and training_acc>95:
+            break
 
         print(f'Training loss: {training_loss:.4f}\taccuracy: {training_acc:.4f}\n')
         if training_acc>best_acc:
@@ -82,10 +87,10 @@ def train():
             best_model_params=copy.deepcopy(model.state_dict())
 
     model.load_state_dict(best_model_params)
-    torch.save(model, f'model-{best_acc:.02f}-best_train_acc.pth')
+    torch.save(model, f'model-googlenet-{best_acc:.02f}-best_train_acc.pth')
 
     train_loss_acc=np.round(train_loss_acc,4)
-    np.savetxt('train_loss_acc.csv',train_loss_acc,delimiter=',')
+    np.savetxt('googlenet-train_loss_acc.csv',train_loss_acc,delimiter=',')
 
 
 
