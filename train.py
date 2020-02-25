@@ -88,7 +88,7 @@ def train():
             loss.backward()
             optimizer.step()
 
-            training_loss += loss.item() * inputs.size(0)
+            training_loss += loss.item() * _data.size(0)
             training_corrects += torch.sum(preds == labels.data)
 
         training_loss = training_loss / (len(train_set)-split)
