@@ -58,8 +58,9 @@ def train():
     best_acc = 0.0
     criterion = nn.CrossEntropyLoss()
     optimizer = torch.optim.SGD(params=model.parameters(), lr=0.001, momentum=0.9)
-    train_loss_acc=np.empty((0,4),dtype=float)
+    loss_acc=np.empty((0,4),dtype=float)
 
+    early_stopping=EarlyStopping(patience=20,verbose=True)
 
     for epoch in range(num_epochs):
         print(f'Epoch: {epoch + 1}/{num_epochs}')
@@ -69,8 +70,6 @@ def train():
         training_corrects = 0
         valid_loss=0.0
         valid_corrects=0
-
-        early_stopping=EarlyStopping(patience=20,verbose=True)
 
         for i, (inputs, labels) in enumerate(train_loader):
             if torch.cuda.is_available():
@@ -86,7 +85,6 @@ def train():
             _, preds = torch.max(outputs.data, 1)
             loss = criterion(outputs, labels)
             
-
             loss.backward()
             optimizer.step()
 
@@ -108,10 +106,8 @@ def train():
         valid_loss=valid_loss/split
         valid_acc=float(valid_corrects)/split
         
+        loss_acc=np.append(loss_acc,np.array([[training_loss,training_acc,valid_loss,valid_acc]]),axis=0)
 
-        loss_acc=np.append(train_loss_acc,np.array([[training_loss,training_acc,valid_loss,valid_acc]]),axis=0)
-
-        print(f'Training loss: {training_loss:.4f}\taccuracy: {training_acc:.4f}\n')
         print_msg=(f'train_loss: {training_loss:.4f} valid_loss: {valid_loss:.4f}\t'+
                    f'train_acc: {training_acc:.4f} valid_acc: {valid_acc:.4f}')
         print(print_msg)
@@ -122,10 +118,10 @@ def train():
             break
 
     loss_acc=np.round(loss_acc,4)
-    np.savetxt('googlenet-train_loss_acc.csv',loss_acc,delimiter=',')
+    np.savetxt('googlenet2-train_loss_acc.csv',loss_acc,delimiter=',')
     
-    model.load_state_dict(torch.load('checkpoint.pt'))
-    torch.save(model,'googlenet-best-train-acc.pth')
+    model.load_state_dict(torch.load('checkpoint2.pt'))
+    torch.save(model,'googlenet2-best-train-acc.pth')
 
 
 

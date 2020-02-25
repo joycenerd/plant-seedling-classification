@@ -39,7 +39,7 @@ def test():
         submission['species'][i]=classes[preds[0]]
         print(filename+" complete")
     
-    submission.to_csv(Path(ROOTDIR).joinpath('submission.csv'),index=False)
+    submission.to_csv(Path(ROOTDIR).joinpath('submission3.csv'),index=False)
 
 
 
