@@ -20,8 +20,7 @@ def test():
     classes=[_dir for _dir in os.listdir(Path(ROOTDIR).joinpath('train'))]
     num_classes=len(classes)
 
-    model=models.vgg19(pretrained=True)
-    model.classifier._modules['6']=nn.Linear(4096,num_classes)
+    model=torch.load("/Users/joycechin/Desktop/model-0.91-best_train_acc.pth")
     if torch.cuda.is_available():
         model=model.cuda("cuda:0")
     model.eval()
