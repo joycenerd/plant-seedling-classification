@@ -60,7 +60,7 @@ def train():
     optimizer = torch.optim.SGD(params=model.parameters(), lr=0.001, momentum=0.9)
     loss_acc=np.empty((0,4),dtype=float)
 
-    early_stopping=EarlyStopping(patience=10,verbose=True)
+    early_stopping=EarlyStopping(patience=15,verbose=True)
 
     for epoch in range(num_epochs):
         print(f'Epoch: {epoch + 1}/{num_epochs}')
@@ -118,10 +118,10 @@ def train():
             break
 
     loss_acc=np.round(loss_acc,4)
-    np.savetxt('googlenet3-train_loss_acc.csv',loss_acc,delimiter=',')
+    np.savetxt('googlenet4-train_loss_acc.csv',loss_acc,delimiter=',')
     
-    model.load_state_dict(torch.load('checkpoint3.pt'))
-    torch.save(model,'googlenet3-best-train-acc.pth')
+    model.load_state_dict(torch.load('checkpoint4.pt'))
+    torch.save(model,'googlenet4-best-train-acc.pth')
 
 
 

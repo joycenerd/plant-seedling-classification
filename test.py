@@ -20,7 +20,7 @@ def test():
     classes=[_dir for _dir in os.listdir(Path(ROOTDIR).joinpath('train'))]
     num_classes=len(classes)
 
-    model=torch.load("/Users/joycechin/Desktop/model-0.91-best_train_acc.pth")
+    model=torch.load("/mnt/md0/new-home/joycenerd/plant-seedling-classification/googlenet4-best-train-acc.pth")
     if torch.cuda.is_available():
         model=model.cuda("cuda:0")
     model.eval()
